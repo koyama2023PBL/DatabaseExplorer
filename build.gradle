@@ -23,6 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation group: 'org.netbeans.external', name: 'com-jcraft-jsch', version: 'RELEASE170'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.15.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
     implementation group: 'com.opencsv', name: 'opencsv', version: '5.7.1'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
