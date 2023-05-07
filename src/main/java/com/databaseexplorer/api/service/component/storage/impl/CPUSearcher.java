@@ -9,4 +9,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CPUSearcher extends StorageSearcherBase {
+
+  public String testRead(){
+    return "test OK!";
+  }
 }

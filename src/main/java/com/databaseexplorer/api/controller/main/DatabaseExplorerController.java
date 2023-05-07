@@ -44,7 +44,16 @@ public class DatabaseExplorerController {
   public ResponseEntity<CpuApiResponse> cpuResource(@Validated CpuApiRequest request) {
 
     visualizeService.hello();
+
     return new ResponseEntity<>(HttpStatus.OK);
+
+  }
+
+  @GetMapping
+  @RequestMapping(value = "/csvtest")
+  public void cpuCsvTest() {
+
+    System.out.println(visualizeService.testCSV());
 
   }
 
