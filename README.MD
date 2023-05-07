@@ -1,3 +1,7 @@
 //DB設定
 //CREATE USER explorer WITH PASSWORD 'explorer' CREATEDB CREATEROLE;
 CREATE USER explorer WITH PASSWORD 'explorer' SUPERUSER;
+
+***DatabaseExplorer
+
+こちらはデータベース
