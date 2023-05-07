@@ -3,10 +3,10 @@ package com.databaseexplorer.api;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class DatabaseExplorerApplicationTests {
 
-	//@Test
-	void contextLoads() {
-	}
+  //@Test
+  void contextLoads() {
+  }
 
 }
