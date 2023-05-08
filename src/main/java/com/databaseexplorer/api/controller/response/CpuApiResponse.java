@@ -21,7 +21,7 @@ public class CpuApiResponse {
   private Date toDate;
 
   @NonNull
-  private Object cpuData;
+  private CPUData cpuDatas[];
   //CPUデータはここに配列として格納する
   //Storageクラスにて作成するOR-Mapperと同様の定義にする予定
   //例：1col-タイムスタンプ、2col-CPU使用率
