@@ -7,16 +7,13 @@ import lombok.NonNull;
 import java.util.Date;
 
 /**
- * CPUリソース情報のリクエストメッセージ.
+ * CPU使用率のデータを保持するモデルクラス
  */
 @Data
 @AllArgsConstructor
-public class CpuApiRequest {
-
+public class CpuUsageData {
   @NonNull
-  private Date fromDate;
-
+  private Date timestamp;
   @NonNull
-  private Date toDate;
-
+  private Double usage;
 }
