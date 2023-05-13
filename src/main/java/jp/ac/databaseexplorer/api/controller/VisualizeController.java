@@ -78,10 +78,4 @@ public class VisualizeController {
   public ResponseEntity<CpuUsageApiResponse> cpuResource() {
     return new ResponseEntity<>(HttpStatus.OK);
   }
-
-  @GetMapping
-  @RequestMapping(value = "/csvtest")
-  public void cpuCsvTest() {
-
-  }
 }
