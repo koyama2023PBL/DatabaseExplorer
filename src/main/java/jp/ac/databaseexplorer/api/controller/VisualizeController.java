@@ -1,7 +1,7 @@
 package jp.ac.databaseexplorer.api.controller;
 
-import jp.ac.databaseexplorer.api.model.visualization.CpuApiRequest;
-import jp.ac.databaseexplorer.api.model.visualization.CpuApiResponse;
+import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiRequest;
+import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiResponse;
 import jp.ac.databaseexplorer.async.main.AsyncDataCollectionService;
 import jp.ac.databaseexplorer.api.service.visualization.CpuUsageService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class VisualizeController {
 
   @GetMapping
   @RequestMapping(value = "/cpu")
-  public ResponseEntity<CpuApiResponse> cpuResource(@Validated CpuApiRequest request) {
+  public ResponseEntity<CpuUsageApiResponse> cpuResource(@Validated CpuUsageApiRequest request) {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
