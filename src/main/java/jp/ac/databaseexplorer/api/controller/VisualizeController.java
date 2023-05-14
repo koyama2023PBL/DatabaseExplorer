@@ -22,6 +22,11 @@ import java.util.Date;
 public class VisualizeController {
 
   /**
+   * Services
+   */
+  private final CpuUsageService cpuUsageService;
+
+  /**
    * CPU使用率を取得するAPI
    * @param startTime 取得期間の開始時間
    * @param endTime 取得期間の終了時間
@@ -35,8 +40,7 @@ public class VisualizeController {
       Date startTimeDate = dtFt.parse(startTime);
       Date endTimeDate = dtFt.parse(endTime);
       CpuUsageApiRequest request = new CpuUsageApiRequest(startTimeDate, endTimeDate);
-      CpuUsageService service = new CpuUsageService();
-      CpuUsageApiResponse response = service.getCpuUsage(request);
+      CpuUsageApiResponse response = cpuUsageService.getCpuUsage(request);
 
       // ダミーのレスポンスを作成する --START
       SimpleDateFormat dummyDtFt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
