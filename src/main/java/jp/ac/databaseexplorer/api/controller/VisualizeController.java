@@ -47,6 +47,6 @@ public class VisualizeController {
   @GetMapping
   @RequestMapping(value = "/csvtest")
   public void cpuCsvTest() {
-    System.out.println(cpuUsageService.testCSV());
+//    System.out.println(cpuUsageService.testCSV());
   }
 }
