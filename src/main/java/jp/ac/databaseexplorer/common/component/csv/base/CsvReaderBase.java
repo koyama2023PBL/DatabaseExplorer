@@ -4,9 +4,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import jp.ac.databaseexplorer.common.exception.SystemException;
 import jp.ac.databaseexplorer.storage.base.CsvModelBase;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,14 +19,14 @@ public abstract class CsvReaderBase<M extends CsvModelBase> {
   /**
    * CSVファイルを読み込む
    */
-  public List<M> read() throws Exception {
+  public List<M> read() throws IOException {
     try {
       HeaderColumnNameMappingStrategy<M> strategy = new HeaderColumnNameMappingStrategy<>();
       strategy.setType(modelClass());
       CsvToBean<M> csvToBean = new CsvToBeanBuilder<M>(new FileReader(filePath())).withMappingStrategy(strategy).build();
       return csvToBean.parse();
-    } catch (Exception e) {
-      throw e;  // TODO: 例外処理
+    } catch (IOException ioe) {
+      throw new SystemException("SYS-00001","CSV取得処理でIOExceptionが発生しました",ioe);
     }
   }
 

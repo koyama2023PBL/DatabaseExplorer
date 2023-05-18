@@ -4,10 +4,14 @@ import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiRequest;
 import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiResponse;
 import jp.ac.databaseexplorer.api.model.visualization.CpuUsageData;
 import jp.ac.databaseexplorer.api.service.visualization.CpuUsageService;
+import jp.ac.databaseexplorer.common.exception.ApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +29,13 @@ public class VisualizeController {
    * Services
    */
   private final CpuUsageService cpuUsageService;
+
+  /**
+   * Loggers
+   */
+  public static final Logger systemLogger =  LoggerFactory.getLogger("SYSTEM_LOG");
+  public static final Logger errorLogger =  LoggerFactory.getLogger("ERROR_LOG");
+  public static final Logger operationLogger =  LoggerFactory.getLogger("OPERATION_LOG");
 
   /**
    * CPU使用率を取得するAPI
@@ -72,7 +83,66 @@ public class VisualizeController {
     catch (ParseException e) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    catch(Exception e) {
+    catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * CPU使用率を取得するAPI
+   * @param startTime 取得期間の開始時間
+   * @param endTime 取得期間の終了時間
+   * @return HttpResponse
+   */
+  @GetMapping
+  @RequestMapping(value = "/cpu-usagewithexception", method = RequestMethod.GET)
+  public ResponseEntity<?> cpuUsageWithException( @RequestParam("starttime")String startTime,@RequestParam("endtime")String endTime) {
+    try {
+
+      // TODO APIリクエスト時の処理 リクエスト項目をJSON化して出力する？
+      systemLogger.info("cpuUsageWithExceptionAPI start: " + startTime + endTime);
+
+      SimpleDateFormat dtFt = new SimpleDateFormat("yyyyMMddHHmmss");
+      Date startTimeDate = dtFt.parse(startTime);
+      Date endTimeDate = dtFt.parse(endTime);
+      CpuUsageApiRequest request = new CpuUsageApiRequest(startTimeDate, endTimeDate);
+      CpuUsageApiResponse response = cpuUsageService.getCpuUsage(request);
+
+      // ダミーのレスポンスを作成する --START
+      SimpleDateFormat dummyDtFt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      CpuUsageData[] cpuUsageDatas = new CpuUsageData[]{
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:00:00"), 20.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:10:00"), 30.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:20:00"), 40.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:30:00"), 20.88),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:40:00"), 20.68),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 18:50:00"), 25.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:00:00"), 20.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:10:00"), 20.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:20:00"), 30.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:30:00"), 20.98),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:40:00"), 70.68),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 19:50:00"), 10.28),
+          new CpuUsageData(dummyDtFt.parse("2023/05/07 20:00:00"), 20.98)
+      };
+      response = new CpuUsageApiResponse(startTimeDate, endTimeDate, cpuUsageDatas);
+      // ダミーのレスポンスを作成する --END
+
+      // TODO APIリクエスト時の処理 リクエスト項目をJSON化して出力する？
+      systemLogger.info("cpuUsageWithExceptionAPI end: " + startTime + endTime);
+      // TODO オペレーションログの出力内容決定
+      operationLogger.info("cpuUsageWithExceptionAPI operationTime:" + "1.2345 sec");
+
+      return ResponseEntity.ok(response);
+    } catch (ParseException pe) {
+      // TODO リクエストの単体チェック（Filterなどの設定する？）
+      errorLogger.error("cpuUsageWithException:ParseException",pe);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (ApplicationException ae){
+      errorLogger.error("cpuUsageWithException:ApplicationException",ae);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (Exception e) {
+      errorLogger.error("cpuUsageWithException:Exception",e);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
