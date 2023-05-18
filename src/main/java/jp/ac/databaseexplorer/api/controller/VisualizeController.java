@@ -1,10 +1,9 @@
 package jp.ac.databaseexplorer.api.controller;
 
-import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiRequest;
-import jp.ac.databaseexplorer.api.model.visualization.CpuUsageApiResponse;
-import jp.ac.databaseexplorer.api.model.visualization.CpuUsageData;
+import jp.ac.databaseexplorer.api.model.visualization.*;
 import jp.ac.databaseexplorer.api.service.visualization.CpuUsageService;
 import jp.ac.databaseexplorer.common.exception.ApplicationException;
+import jp.ac.databaseexplorer.api.service.visualization.PostgresProcessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,34 +25,42 @@ import java.util.Date;
 public class VisualizeController {
 
   /**
-   * Services
-   */
-  private final CpuUsageService cpuUsageService;
-
-  /**
    * Loggers
    */
   public static final Logger systemLogger =  LoggerFactory.getLogger("SYSTEM_LOG");
   public static final Logger errorLogger =  LoggerFactory.getLogger("ERROR_LOG");
   public static final Logger operationLogger =  LoggerFactory.getLogger("OPERATION_LOG");
+  
+  private static final String STRING_TO_DATE = "yyyyMMddHHmmss";
+
+  /**
+   * CPU使用率を取得するサービス
+   */
+  private final CpuUsageService cpuUsageService;
+  /**
+   * postgresのプロセス情報を取得するサービス
+   */
+  private final PostgresProcessService postgresProcessService;
+
 
   /**
    * CPU使用率を取得するAPI
    * @param startTime 取得期間の開始時間
    * @param endTime 取得期間の終了時間
-   * @return HttpResponse
+   * @return CpuUsageApiResponse
    */
   @GetMapping
   @RequestMapping(value = "/cpu-usage", method = RequestMethod.GET)
   public ResponseEntity<?> cpuUsage( @RequestParam("starttime")String startTime,@RequestParam("endtime")String endTime) {
     try {
-      SimpleDateFormat dtFt = new SimpleDateFormat("yyyyMMddHHmmss");
+      SimpleDateFormat dtFt = new SimpleDateFormat(STRING_TO_DATE);
       Date startTimeDate = dtFt.parse(startTime);
       Date endTimeDate = dtFt.parse(endTime);
       CpuUsageApiRequest request = new CpuUsageApiRequest(startTimeDate, endTimeDate);
       CpuUsageApiResponse response = cpuUsageService.getCpuUsage(request);
 
       // ダミーのレスポンスを作成する --START
+      // サービスの実装が完了次第、作成する予定
       SimpleDateFormat dummyDtFt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
       CpuUsageData[] cpuUsageDatas = new CpuUsageData[]{
         new CpuUsageData(dummyDtFt.parse("2023/05/07 18:00:00"), 20.98),
@@ -77,7 +84,6 @@ public class VisualizeController {
       if (response == null) {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
       }
-
       return ResponseEntity.ok(response);
       }
     catch (ParseException e) {
@@ -147,9 +153,40 @@ public class VisualizeController {
     }
   }
 
+  /**
+   * postgresのプロセス情報を取得するAPI
+   * @param startTime 取得期間の開始時間
+   * @param endTime 取得期間の終了時間
+   * @return PostgresProcessApiResponse
+   */
   @GetMapping
-  @RequestMapping(value = "/cpu")
-  public ResponseEntity<CpuUsageApiResponse> cpuResource() {
-    return new ResponseEntity<>(HttpStatus.OK);
+  @RequestMapping(value = "/processes", method = RequestMethod.GET)
+  public ResponseEntity<?> processes(@RequestParam("starttime")String startTime,@RequestParam("endtime")String endTime) {
+    try {
+      SimpleDateFormat dtFt = new SimpleDateFormat(STRING_TO_DATE);
+      Date startTimeDate = dtFt.parse(startTime);
+      Date endTimeDate = dtFt.parse(endTime);
+      PostgresProcessApiRequest request = new PostgresProcessApiRequest(startTimeDate, endTimeDate);
+      PostgresProcessApiResponse response = postgresProcessService.getPostgresProcess(request);
+
+      // ダミーのレスポンスを作成する --START
+      // サービスの実装が完了次第、作成する予定
+      response = new PostgresProcessApiResponse(startTimeDate, endTimeDate, true,false,
+       true,false,true,true,false,true);
+      // ダミーのレスポンスを作成する --END
+
+      // サービスはエラーが発生したらNULLを返す想定
+      if (response == null) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+
+      return ResponseEntity.ok(response);
+    }
+    catch (ParseException e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    catch(Exception e) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
