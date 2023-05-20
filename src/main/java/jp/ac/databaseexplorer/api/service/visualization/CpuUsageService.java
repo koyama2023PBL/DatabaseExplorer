@@ -6,12 +6,11 @@ import jp.ac.databaseexplorer.api.model.visualization.CpuUsageData;
 import jp.ac.databaseexplorer.common.component.csv.impl.SarCpuCsvReader;
 import jp.ac.databaseexplorer.common.exception.ApplicationException;
 import jp.ac.databaseexplorer.common.exception.SystemException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * CPU使用率を取得するサービスクラス
@@ -28,14 +27,16 @@ public class CpuUsageService {
   /**
    * CPU使用率を取得する
    */
-  public CpuUsageApiResponse getCpuUsage(CpuUsageApiRequest request) throws ApplicationException {
+  public CpuUsageApiResponse getCpuUsage(@NonNull CpuUsageApiRequest request) throws ApplicationException {
     try {
-
-      //TODO サービスクラスへのインプット項目チェック処理
-      if (Objects.nonNull(request)) {throw new ApplicationException("","",new Exception());}
-
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
+
+      // インプット項目チェック
+      if (request.getStartTime().after(request.getEndTime())) {
+        throw new ApplicationException("", "", new Exception());
+      }
+
       CpuUsageData[] cpuUsageData = reader.read(startTime, endTime).stream()
           .map(record -> new CpuUsageData(record.getTimestamp(), 1.0 - record.getIdle()))
           .toArray(CpuUsageData[]::new);
