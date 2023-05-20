@@ -1,11 +1,11 @@
 package jp.ac.databaseexplorer.common.exception;
 
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class ApplicationException extends Exception{
+@Getter
+@Setter
+public class ApplicationException extends Exception {
 
   public ApplicationException(String errorCode,String errorMessage,Exception errorException){
     this.setErrorCode(errorCode);

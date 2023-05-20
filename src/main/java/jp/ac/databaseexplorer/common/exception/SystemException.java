@@ -1,9 +1,11 @@
 package jp.ac.databaseexplorer.common.exception;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class SystemException extends RuntimeException{
+@Getter
+@Setter
+public class SystemException extends RuntimeException {
 
   public SystemException(String errorCode,String errorMessage,Exception errorException){
     this.setErrorCode(errorCode);
