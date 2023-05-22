@@ -2,20 +2,14 @@ package jp.ac.databaseexplorer.api.service.visualization;
 
 import jp.ac.databaseexplorer.api.model.visualization.SlowQueryCountApiRequest;
 import jp.ac.databaseexplorer.api.model.visualization.SlowQueryCountApiResponse;
-import jp.ac.databaseexplorer.api.model.visualization.SlowQueryCountData;
 import jp.ac.databaseexplorer.common.component.csv.impl.QueryTimeCsvReader;
-import jp.ac.databaseexplorer.common.component.csv.impl.SarCpuCsvReader;
 import jp.ac.databaseexplorer.common.exception.ApplicationException;
 import jp.ac.databaseexplorer.common.exception.SystemException;
 import jp.ac.databaseexplorer.storage.visualization.QueryTime;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +25,7 @@ public class SlowQueryCountService {
    * スロークエリの数を取得する
    */
   public SlowQueryCountApiResponse getSlowQueryCount(SlowQueryCountApiRequest request) throws ApplicationException {
-//    try{
+    try{
 
       //TODO サービスクラスへのインプット項目チェック処理
       //if(Objects.nonNull(request)){throw new ApplicationException("","",new Exception());}
@@ -45,12 +39,12 @@ public class SlowQueryCountService {
           .size();
 
       return new SlowQueryCountApiResponse(startTime, endTime, request.getQueryTimeAtLeast(), slowQueryNum);
-//    } catch (SystemException se) {
-//      throw new ApplicationException("APP-00008", "スロークエリ数取得処理でシステム例外が発生しました", se);
+    } catch (SystemException se) {
+      throw new ApplicationException("APP-00008", "スロークエリ数取得処理でシステム例外が発生しました", se);
 //    } catch (ApplicationException ae) {
 //      throw new ApplicationException("APP-00009", "スロークエリ数取得処理で業務例外が発生しました。", ae);
-//    } catch (Exception e) {
-//      throw new ApplicationException("APP-00010", "スロークエリ数取得処理で予期せぬ例外が発生しました。", e);
-//    }
+    } catch (Exception e) {
+      throw new ApplicationException("APP-00010", "スロークエリ数取得処理で予期せぬ例外が発生しました。", e);
+    }
   }
 }
