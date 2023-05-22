@@ -1,6 +1,5 @@
 package jp.ac.databaseexplorer.common.component.csv.base;
 
-import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
@@ -19,14 +18,16 @@ public abstract class CsvReaderBase<M extends CsvModelBase> {
   /**
    * CSVファイルを読み込む
    */
-  public List<M> read() throws IOException {
+  public List<M> read() throws SystemException {
     try {
       HeaderColumnNameMappingStrategy<M> strategy = new HeaderColumnNameMappingStrategy<>();
       strategy.setType(modelClass());
       CsvToBean<M> csvToBean = new CsvToBeanBuilder<M>(new FileReader(filePath())).withMappingStrategy(strategy).build();
       return csvToBean.parse();
     } catch (IOException ioe) {
-      throw new SystemException("SYS-00001","CSV取得処理でIOExceptionが発生しました",ioe);
+      throw new SystemException("SYS-00001", "CSV取得処理でIOExceptionが発生しました", ioe);
+    } catch (Exception e) {
+      throw new SystemException("SYS-00007", "CSV取得処理で予期せぬエラーが発生しました", e);
     }
   }
 
