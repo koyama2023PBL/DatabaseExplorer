@@ -12,6 +12,6 @@ import lombok.EqualsAndHashCode;
 public class AvgExecTime extends CsvWithTimestampModelBase {
   private Short kind;
   private Long calls;
-  private Double total_exec_time;
+  private Double totalExecTime;
 
 }
