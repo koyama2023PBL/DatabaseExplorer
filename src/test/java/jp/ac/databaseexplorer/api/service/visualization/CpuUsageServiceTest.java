@@ -42,7 +42,7 @@ public class CpuUsageServiceTest {
 
     SarCpu sarCpu = new SarCpu();
     sarCpu.setTimestamp(startTime);
-    sarCpu.setIdle(0.2);
+    sarCpu.setIdle(20.0);
 
     when(reader.read(startTime, endTime)).thenReturn(List.of(sarCpu));
 
@@ -53,7 +53,7 @@ public class CpuUsageServiceTest {
     CpuUsageData[] data = response.getCpuUsageData();
     assertEquals(1, data.length);
     assertEquals(startTime, data[0].getTimestamp());
-    assertEquals(0.8, data[0].getUsage());
+    assertEquals(80.0, data[0].getUsage());
   }
 
   @Test

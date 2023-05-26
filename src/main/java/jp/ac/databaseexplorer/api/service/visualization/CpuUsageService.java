@@ -38,7 +38,7 @@ public class CpuUsageService {
       }
 
       CpuUsageData[] cpuUsageData = reader.read(startTime, endTime).stream()
-          .map(record -> new CpuUsageData(record.getTimestamp(), 1.0 - record.getIdle()))
+          .map(record -> new CpuUsageData(record.getTimestamp(), 100.0 - record.getIdle()))
           .toArray(CpuUsageData[]::new);
       return new CpuUsageApiResponse(startTime, endTime, cpuUsageData);
     } catch (SystemException se) {
