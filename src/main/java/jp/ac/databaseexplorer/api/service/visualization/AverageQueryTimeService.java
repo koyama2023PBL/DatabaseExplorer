@@ -35,7 +35,7 @@ public class AverageQueryTimeService {
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
       List<AvgExecTime> execTimes = reader.read(startTime, endTime).stream().filter(x -> Objects.equals(x.getKind(), request.getQueryKind())).toList();
-      Double totalExecTime = execTimes.stream().mapToDouble(AvgExecTime::getTotal_exec_time).max().orElse(0) - execTimes.stream().mapToDouble(AvgExecTime::getTotal_exec_time).min().orElse(0);
+      Double totalExecTime = execTimes.stream().mapToDouble(AvgExecTime::getTotalExecTime).max().orElse(0) - execTimes.stream().mapToDouble(AvgExecTime::getTotalExecTime).min().orElse(0);
       Double totalExecCount = execTimes.stream().mapToDouble(AvgExecTime::getCalls).max().orElse(0) - execTimes.stream().mapToDouble(AvgExecTime::getCalls).min().orElse(0);
       Double averageExecTime = -1D; //Countが0の場合には-1を返す
       if(totalExecCount != 0){
