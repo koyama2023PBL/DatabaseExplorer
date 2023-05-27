@@ -1,11 +1,28 @@
 package jp.ac.databaseexplorer.async.repository;
 
+import jp.ac.databaseexplorer.async.job.AbstractJob;
+import jp.ac.databaseexplorer.common.exception.ApplicationException;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
-public abstract class AbstractJobRepository {
+/**
+ * 非同期データ収集処理のリポジトリの基底クラス
+ */
+@RequiredArgsConstructor
+public abstract class AbstractJobRepository<J extends AbstractJob> {
 
-  protected List<AbstractJobRepository> jobList;
+  /**
+   * データ収集ジョブのリスト
+   */
+  protected final List<J> jobList;
 
-  public void start() {
+  /**
+   * ジョブを順に実行する
+   */
+  public void start() throws ApplicationException {
+    for (J job : jobList) {
+      job.execute();
+    }
   }
 }
