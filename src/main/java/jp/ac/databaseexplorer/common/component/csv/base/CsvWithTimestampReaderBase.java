@@ -18,8 +18,8 @@ public abstract class CsvWithTimestampReaderBase<M extends CsvWithTimestampModel
   public List<M> read(Date startTime, Date endTime) throws SystemException {
     try {
       return super.read().stream()
-          .filter(model -> model.getTimestamp().after(startTime)
-               && model.getTimestamp().before(endTime))
+          .filter(model -> (model.getTimestamp().getTime() >= startTime.getTime())
+              && (model.getTimestamp().getTime() <= endTime.getTime()))
           .collect(Collectors.toList());
     } catch (SystemException se) {
       throw new SystemException("SYS-00002", "CSV取得処理でエラーが発生しました", se);
