@@ -29,7 +29,7 @@ public class AsyncDataCollectionService {
    */
   @Scheduled(fixedRateString = "${db.data.async.collection.interval}")
   public void start() throws ApplicationException {
-    visualizeRepository.start();
+//    visualizeRepository.start();
     // analyzeRepository.start();
     // suggestRepository.start();
   }

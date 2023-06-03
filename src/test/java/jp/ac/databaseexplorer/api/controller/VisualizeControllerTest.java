@@ -1,4 +1,5 @@
 package jp.ac.databaseexplorer.api.controller;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -6,11 +7,14 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -46,6 +50,7 @@ class VisualizeControllerTest {
       .param("starttime", startTimeStr)
       .param("endtime", endTimeStr))
       .andExpect(status().isOk())
+      .andDo(MockMvcResultHandlers.print())
       .andExpect(content().json(expectResponse))
       .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //.andReturn();

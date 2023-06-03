@@ -31,4 +31,9 @@ public class CpuUsageApiResponse {
   @NonNull
   @JsonProperty("data")
   private CpuUsageData[] cpuUsageData;
+
+  @Override
+  public String toString() {
+    return "CpuUsageApiResponse(startTime=" + this.getStartTime() + ", endTime=" + this.getEndTime() + ", cpuUsageData=" + java.util.Arrays.deepToString(this.getCpuUsageData()) + ")";
+  }
 }
