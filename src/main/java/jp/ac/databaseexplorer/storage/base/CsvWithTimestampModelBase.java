@@ -1,5 +1,6 @@
 package jp.ac.databaseexplorer.storage.base;
 
+import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,5 +17,6 @@ import static jp.ac.databaseexplorer.common.constants.ConversionFormat.STRING_TO
 public abstract class CsvWithTimestampModelBase extends CsvModelBase {
 
   @CsvDate(STRING_TO_DATE)
+  @CsvBindByPosition(position = 0)
   protected Date timestamp;
 }
