@@ -1,5 +1,6 @@
 package jp.ac.databaseexplorer.storage.visualization;
 
+import com.opencsv.bean.CsvBindByPosition;
 import jp.ac.databaseexplorer.storage.base.CsvWithTimestampModelBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,8 +11,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class QueryTime extends CsvWithTimestampModelBase {
+  @CsvBindByPosition(position = 1)
   private Integer pid;
 
+  @CsvBindByPosition(position = 2)
   private Double queryTime;
 
 }
