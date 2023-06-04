@@ -21,6 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - uses: szenius/set-timezone@v1.2
+      with:
+        timezoneLinux: "Asia/Tokyo"
+        timezoneMacos: "Asia/Tokyo"
+        timezoneWindows: "Tokyo Standard Time"
+
     - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
@@ -47,4 +53,4 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --stacktrace --info --debug
