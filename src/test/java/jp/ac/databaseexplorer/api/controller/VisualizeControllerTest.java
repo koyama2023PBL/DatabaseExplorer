@@ -64,11 +64,11 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr))
-        .andExpect(status().isOk())
-        .andExpect(content().json(expectResponse))
-        .andReturn();
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().isOk())
+      .andExpect(content().json(expectResponse))
+      .andReturn();
 
   }
 
@@ -87,6 +87,28 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().isOk())
+      .andExpect(content().json(expectResponse))
+      .andReturn();
+
+  }
+
+  @Test
+  public void testCpuUsageBothTimeSameTimestamp() throws Exception {
+
+    // Arrange
+    String startTimeStr = "20230501000010";
+    String endTimeStr = "20230501000010";
+    Double maxUsage = 100D;
+    //Double idle1 = 51.23;
+    Double idle2 = 50.56;
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:10\",\"endtime\":\"2023/05/01 00:00:10\"," +
+        "\"data\":[{\"date\":\"2023/05/01 00:00:10\",\"usage\":" + (maxUsage - idle2) + "}]}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr))
         .andExpect(status().isOk())
@@ -101,18 +123,13 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "19900501235950";
     String endTimeStr = "19900501000010";
-//    Double maxUsage = 100D;
-//    Double idle1 = 51.23;
-//    Double idle2 = 50.56;
-//    String expectResponse = "{\"starttime\":\"1990/05/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\"," +
-//        "\"data\":[]}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError())
-        .andReturn();
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().is5xxServerError())
+      .andReturn();
 
   }
 
@@ -122,18 +139,13 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "20250501235950";
     String endTimeStr = "20250501000010";
-//    Double maxUsage = 100D;
-//    Double idle1 = 51.23;
-//    Double idle2 = 50.56;
-//    String expectResponse = "{\"starttime\":\"2025/05/01 23:59:50\",\"endtime\":\"2025/05/01 00:00:10\"," +
-//        "\"data\":[]}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError())
-        .andReturn();
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().is5xxServerError())
+      .andReturn();
 
   }
 
@@ -143,18 +155,14 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "20230501001210";
     String endTimeStr = "20230501001200";
-//    Double maxUsage = 100D;
-//    Double idle1 = 52.12;
-//    Double idle2 = 29.96;
-//    String expectResponse = "{\"starttime\":\"2023/05/01 00:12:10\",\"endtime\":\"2023/05/01 00:12:00\"," +
-//        "\"data\":[]}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError())
-        .andReturn();
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().is5xxServerError())
+      .andReturn();
 
   }
 
@@ -167,19 +175,155 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr))
-        .andExpect(status().isBadRequest());
+      .param("starttime", startTimeStr)
+      .param("endtime", endTimeStr))
+      .andExpect(status().isBadRequest());
   }
 
 
 
 
 
-//  @Test
-//  void processes() {
-//    assertTrue(true);
-//  }
+  @Test
+  public void testProcessesDataIsCorrectlyRetrieved() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000000";
+    String endTimeStr = "20230501000200";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\"," +
+        "\"masterProcess\":true," +
+        "\"walWriter\":true," +
+        "\"writer\":true," +
+        "\"checkPointer\":false," +
+        "\"statisticsCollector\":true," +
+        "\"autoVacuumLauncher\":false," +
+        "\"autoVacuumWorker\":true," +
+        "\"backendProcess\":true}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesEndTimeIsOutOfRange() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230528235710";
+    String endTimeStr = "20240501000200";
+    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:02:00\"," +
+        "\"masterProcess\":false," +
+        "\"walWriter\":true," +
+        "\"writer\":true," +
+        "\"checkPointer\":true," +
+        "\"statisticsCollector\":true," +
+        "\"autoVacuumLauncher\":true," +
+        "\"autoVacuumWorker\":true," +
+        "\"backendProcess\":true}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesStartTimeIsOutOfRange() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20200528235710";
+    String endTimeStr = "20230501000000";
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\"," +
+        "\"masterProcess\":true," +
+        "\"walWriter\":true," +
+        "\"writer\":true," +
+        "\"checkPointer\":false," +
+        "\"statisticsCollector\":true," +
+        "\"autoVacuumLauncher\":true," +
+        "\"autoVacuumWorker\":true," +
+        "\"backendProcess\":true}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesBothTimesAreBeforeRange() throws Exception {
+
+    // Arrange
+    String startTimeStr = "19900501235950";
+    String endTimeStr = "19900501000010";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().is5xxServerError())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesBothTimesAreAfterRange() throws Exception {
+
+    // Arrange
+    String startTimeStr = "20400501235950";
+    String endTimeStr = "20400501000010";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().is5xxServerError())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesTimesAreInverted() throws Exception {
+
+    // Arrange
+    String startTimeStr = "20230501001210";
+    String endTimeStr = "20230501001200";
+
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().is5xxServerError())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testProcessesTimeIsInvalid() throws Exception {
+
+    // Arrange
+    String startTimeStr = "";
+    String endTimeStr = "20230501001200";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/processes")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isBadRequest());
+  }
 //
 //  @Test
 //  void averageQueryTime() {
