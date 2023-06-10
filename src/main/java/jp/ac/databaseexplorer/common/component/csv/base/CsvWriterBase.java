@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public abstract class CsvWriterBase<M extends CsvModelBase> {
+public abstract class CsvWriterBase {
 
   /**
    * CSVファイルのパスを返す
