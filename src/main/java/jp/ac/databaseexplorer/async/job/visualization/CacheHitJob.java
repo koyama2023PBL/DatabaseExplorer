@@ -47,8 +47,8 @@ public class CacheHitJob extends VisualizeJobBase {
       }
     }
     catch (Exception ex){
-      systemLogger.error("プロセス情報取得処理で予期せぬエラーが発生しました");
-      throw new ApplicationException("APP-00017", "プロセス情報取得処理で予期せぬエラーが発生しました", ex);
+      systemLogger.error("キャッシュヒット率の取得にはエラーが発生しました");
+      throw new ApplicationException("APP-00021", "キャッシュヒット率の取得にはエラーが発生しました", ex);
     }
   }
 }
