@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -27,13 +28,20 @@ public class SlowQueryCountService {
   public SlowQueryCountApiResponse getSlowQueryCount(SlowQueryCountApiRequest request) throws ApplicationException {
     try{
 
-      //TODO サービスクラスへのインプット項目チェック処理
-      //if(Objects.nonNull(request)){throw new ApplicationException("","",new Exception());}
+      // インプット項目チェック
+      if (request.getStartTime().after(request.getEndTime())) {
+        throw new ApplicationException("", "", new Exception());
+      }
 
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
-//      List<QueryTime> queryTimes = reader.read(startTime, endTime);
-      int slowQueryNum = reader.read(startTime, endTime).stream()
+      List<QueryTime> queryTimes = reader.read(startTime, endTime);
+
+      if(queryTimes.isEmpty()){
+        throw new ApplicationException("","",new Exception());
+      }
+
+      int slowQueryNum = queryTimes.stream()
           .filter(queryTime -> queryTime.getQueryTime() >= request.getQueryTimeAtLeast())
           .collect(Collectors.groupingBy(QueryTime::getPid))
           .size();
@@ -41,8 +49,8 @@ public class SlowQueryCountService {
       return new SlowQueryCountApiResponse(startTime, endTime, request.getQueryTimeAtLeast(), slowQueryNum);
     } catch (SystemException se) {
       throw new ApplicationException("APP-00008", "スロークエリ数取得処理でシステム例外が発生しました", se);
-//    } catch (ApplicationException ae) {
-//      throw new ApplicationException("APP-00009", "スロークエリ数取得処理で業務例外が発生しました。", ae);
+    } catch (ApplicationException ae) {
+      throw new ApplicationException("APP-00009", "スロークエリ数取得処理で業務例外が発生しました。", ae);
     } catch (Exception e) {
       throw new ApplicationException("APP-00010", "スロークエリ数取得処理で予期せぬ例外が発生しました。", e);
     }

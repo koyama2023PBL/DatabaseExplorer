@@ -29,17 +29,18 @@ public class PostgresProcessService {
    */
   public PostgresProcessApiResponse getPostgresProcess(PostgresProcessApiRequest request) throws ApplicationException {
     try {
+
+      // インプット項目チェック
+      if (request.getStartTime().after(request.getEndTime())) {
+        throw new ApplicationException("", "", new Exception());
+      }
+
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
       List<ProcessStatus> postgresProcessData = reader.read(startTime, endTime);
 
       //プロセス情報がない場合はエラー
       if(postgresProcessData.isEmpty()) {
-        throw new ApplicationException("", "", new Exception());
-      }
-
-      // インプット項目チェック
-      if (request.getStartTime().after(request.getEndTime())) {
         throw new ApplicationException("", "", new Exception());
       }
 
