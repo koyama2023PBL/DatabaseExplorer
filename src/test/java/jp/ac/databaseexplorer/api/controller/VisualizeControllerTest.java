@@ -143,14 +143,17 @@ class VisualizeControllerTest {
   public void testCpuUsageBothTimesAreBeforeRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "19900501235950";
+    String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\"," +
+        "\"data\":[]}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
       .param("starttime", startTimeStr)
       .param("endtime", endTimeStr))
-      .andExpect(status().is5xxServerError())
+      .andExpect(status().isOk())
+      .andExpect(content().json(expectResponse))
       .andReturn();
 
   }
@@ -159,15 +162,18 @@ class VisualizeControllerTest {
   public void testCpuUsageBothTimesAreAfterRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "20250501235950";
+    String startTimeStr = "20250401235950";
     String endTimeStr = "20250501000010";
+    String expectResponse = "{\"starttime\":\"2025/04/01 23:59:50\",\"endtime\":\"2025/05/01 00:00:10\"," +
+        "\"data\":[]}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().is5xxServerError())
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -329,7 +335,7 @@ class VisualizeControllerTest {
   public void testProcessesBothTimesAreBeforeRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "19900501235950";
+    String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
 
     // Act
@@ -345,7 +351,7 @@ class VisualizeControllerTest {
   public void testProcessesBothTimesAreAfterRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "20400501235950";
+    String startTimeStr = "20400401235950";
     String endTimeStr = "20400501000010";
 
     // Act
@@ -397,8 +403,9 @@ class VisualizeControllerTest {
     //Arrange
     String startTimeStr = "20230501000000";
     String endTimeStr = "20230501000200";
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"querytime\":70.0,\"count\":1}";
     String threshold = "70";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"querytime\":70.0,\"count\":1}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
@@ -417,8 +424,9 @@ class VisualizeControllerTest {
     //Arrange
     String startTimeStr = "20230501000000";
     String endTimeStr = "20230501000000";
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"querytime\":70.0,\"count\":0}";
     String threshold = "70";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"querytime\":70.0,\"count\":0}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
@@ -529,7 +537,7 @@ class VisualizeControllerTest {
   public void testSlowQueryBothTimesAreBeforeRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "19900501235950";
+    String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
     String threshold = "5";
 
@@ -547,7 +555,7 @@ class VisualizeControllerTest {
   public void testSlowQueryBothTimesAreAfterRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "20400501235950";
+    String startTimeStr = "20400401235950";
     String endTimeStr = "20400501000010";
     String threshold = "5";
 
@@ -623,7 +631,7 @@ class VisualizeControllerTest {
     Double hitCount = 189D - 8D; //hitCount.max - hitCount.min
     Double readCount = 218D- 9D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"dbname\":\"explorer\",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -646,7 +654,7 @@ class VisualizeControllerTest {
     Double hitCount = 8D; //hitCount.max - hitCount.min
     Double readCount = 9D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":\"explorer\",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -669,7 +677,7 @@ class VisualizeControllerTest {
 //    double readCount = 42- 9; //readCount.max - readCount.min
     Double hitRate = -1.0;
     String dbname = "explorer";
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"dbname\":\"explorer\",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -704,15 +712,18 @@ class VisualizeControllerTest {
 
     //Arrange
     String startTimeStr = "20230528235710";
-    String endTimeStr = "20240501000200";
-    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:02:00\",\"querytime\":70.0,\"count\":3}";
-    String threshold = "70";
+    String endTimeStr = "20240501000000";
+    String dbname = "db1";
+    Double hitCount = 3624930D - 3624698D; //hitCount.max - hitCount.min
+    Double readCount = 4346806D - 4346806D; //readCount.max - readCount.min
+    Double hitRate = hitCount / (readCount + hitCount);
+    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
+            .param("dbname", dbname))
         .andExpect(status().isOk())
         .andExpect(content().json(expectResponse))
         .andReturn();
@@ -725,71 +736,63 @@ class VisualizeControllerTest {
     //Arrange
     String startTimeStr = "20200528235710";
     String endTimeStr = "20230501000000";
-    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"querytime\":5,\"count\":1}";
-    String threshold = "5";
+    String dbname = "explorer";
+    Double hitCount = 8D; //hitCount.max - hitCount.min
+    Double readCount = 9D; //readCount.max - readCount.min
+    Double hitRate = hitCount / (readCount + hitCount);
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
+            .param("dbname", dbname))
         .andExpect(status().isOk())
         .andExpect(content().json(expectResponse))
         .andReturn();
   }
 
   @Test
-  public void testCacheHitRateNoData() throws Exception {
-
-    //Arrange
-    String startTimeStr = "20230501000001";
-    String endTimeStr = "20230501000002";
-    //String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"querytime\":5,\"count\":1}";
-    String threshold = "5";
-
-    // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr)
-            .param("querytime", threshold))
-        .andExpect(status().is5xxServerError());
-  }
-
-  @Test
   public void testCacheHitRateBothTimesAreBeforeRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "19900501235950";
+    String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
-    String threshold = "5";
+    Double hitRate = -1.0;
+    String dbname = "explorer";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
-        .andExpect(status().is5xxServerError())
+            .param("dbname", dbname))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
         .andReturn();
-
   }
 
   @Test
   public void testCacheHitRateBothTimesAreAfterRange() throws Exception {
 
     // Arrange
-    String startTimeStr = "20400501235950";
+    String startTimeStr = "20400401235950";
     String endTimeStr = "20400501000010";
-    String threshold = "5";
+    Double hitRate = -1.0;
+    String dbname = "explorer";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
-        .andExpect(status().is5xxServerError())
+            .param("dbname", dbname))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
         .andReturn();
 
   }
+
 
   @Test
   public void testCacheHitRateTimesAreInverted() throws Exception {
@@ -797,13 +800,13 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "20230501001210";
     String endTimeStr = "20230501001200";
-    String threshold = "5";
+    String dbname = "db2";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
-            .param("starttime", startTimeStr)
-            .param("endtime", endTimeStr)
-            .param("querytime", threshold))
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
+        .param("starttime", startTimeStr)
+        .param("endtime", endTimeStr)
+        .param("dbname", dbname))
         .andExpect(status().is5xxServerError())
         .andReturn();
 
@@ -815,46 +818,264 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "";
     String endTimeStr = "20230501001200";
-    String threshold = "5";
+    String dbname = "db2";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
-        .andExpect(status().isBadRequest());
+            .param("dbname", dbname))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+
   }
 
   @Test
-  public void testCacheHitRateThresholdIsInvalid() throws Exception {
+  public void testCacheHitRateDBNameIsNotFound() throws Exception {
 
-    // Arrange
-    String startTimeStr = "20230501000000";
-    String endTimeStr = "20230501000200";
-    String threshold = "A";
+    //Arrange
+    String startTimeStr = "20200528235710";
+    String endTimeStr = "20230501000000";
+    String dbname = "explorer2";
+    Double hitRate = -1D;
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
-    mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
+    mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
-            .param("querytime", threshold))
-        .andExpect(status().isBadRequest());
+            .param("dbname", dbname))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+  }
+  
+  //ここからクエリの平均時間のテスト
+
+  @Test
+  public void testAvgQueryTimeDataIsCorrectlyRetrieved() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000000";
+    String endTimeStr = "20230501000020";
+    String kind = "1";
+    Double calls = 44D - 7D; //calls.max - calls.min
+    Double execTime = 447.88- 56.83; //execTime.max - execTime.min
+    Double time = execTime / calls;
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:20\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeDateAreSameTimestamp() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000000";
+    String endTimeStr = "20230501000000";
+    String kind = "1";
+    Double execTime = 56.83; //execTime.max - execTime.min
+    Double calls = 7D; //calls.max - calls.min
+    Double time = execTime / calls;
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeDataIsNotFound() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000001";
+    String endTimeStr = "20230501000002";
+    Double time = -1.0;
+    String kind = "1";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  //kindの設定がない場合
+  @Test
+  public void testAvgQueryTimeKindParamIsNotFound() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000000";
+    String endTimeStr = "20230501000200";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeKindIsNotValid() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230501000000";
+    String endTimeStr = "20230501000200";
+    String kind = "5";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeEndTimeIsOutOfRange() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20230528235710";
+    String endTimeStr = "20240501000000";
+    String kind = "2";
+    Double execTime = 48353023.05 - 48350084.87; //execTime.max - execTime.min
+    Double calls = 4838496D - 4838148D; //calls.max - calls.min
+    Double time = execTime / calls;
+    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeStartTimeIsOutOfRange() throws Exception {
+
+    //Arrange
+    String startTimeStr = "20200528235710";
+    String endTimeStr = "20230501000000";
+    String kind = "3";
+    Double execTime = 129.6D; //execTime.max - execTime.min
+    Double calls = 16D; //calls.max - calls.min
+    Double time = execTime / calls;
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+  }
+
+  @Test
+  public void testAvgQueryTimeBothTimesAreBeforeRange() throws Exception {
+
+    // Arrange
+    String startTimeStr = "19900401235950";
+    String endTimeStr = "19900501000010";
+    Double time = -1.0;
+    String kind = "1";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+  }
+
+  @Test
+  public void testAvgQueryTimeBothTimesAreAfterRange() throws Exception {
+
+    // Arrange
+    String startTimeStr = "20400401235950";
+    String endTimeStr = "20400501000010";
+    Double time = -1.0;
+    String kind = "4";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
+
   }
 
 
-//
-//  @Test
-//  void averageQueryTime() {
-//    assertTrue(true);
-//  }
-//
-//  @Test
-//  void hitRate() {
-//    assertTrue(true);
-//  }
-//
-//  @Test
-//  void slowQueryCounts() {
-//    assertTrue(true);
-//  }
+  @Test
+  public void testAvgQueryTimeTimesAreInverted() throws Exception {
+
+    // Arrange
+    String startTimeStr = "20230501001210";
+    String endTimeStr = "20230501001200";
+    String kind = "4";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().is5xxServerError())
+        .andReturn();
+
+  }
+
+  @Test
+  public void testAvgQueryTimeTimeIsInvalid() throws Exception {
+
+    // Arrange
+    String startTimeStr = "";
+    String endTimeStr = "20230501001200";
+    String kind = "3";
+
+    // Act
+    mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("kind", kind))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+
+  }
+
+
 }
