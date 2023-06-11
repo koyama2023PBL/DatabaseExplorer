@@ -21,7 +21,7 @@ public class AverageQueryTimeApiResponse {
   private Date startTime;
 
   @NonNull
-  @JsonProperty("enddtime")
+  @JsonProperty("endtime")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "Asia/Tokyo")
   private Date endTime;
 
