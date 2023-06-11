@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  db:
+    container_name: de-psql
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: explorer
+      POSTGRES_USER: explorer
+      POSTGRES_PASSWORD: explorer
+      POSTGRES_SHARED_PRELOAD_LIBRARIES: 'pg_stat_statements'
+    ports:
+      - 5432:5432
+  ssh:
+    container_name: de-ssh
+    build: .
+    restart: always
+    ports:
+      - 2222:2222

@@ -33,6 +33,7 @@ public class SshUtil {
       @Value("${os.data.async.collection.auth}")        String auth,
       @Value("${os.data.async.collection.username}")    String username,
       @Value("${os.data.async.collection.address}")     String host,
+      @Value("${os.data.async.collection.port}")        Integer port,
       @Value("${os.data.async.collection.password}")    String password,
       @Value("${os.data.async.collection.keyfile}")     String keyfile,
       @Value("${os.data.async.collection.passphrase}")  String passphrase,
@@ -42,14 +43,14 @@ public class SshUtil {
       JSch jsch = new JSch();
       switch (auth) {
         case "password" -> {
-          this.session = jsch.getSession(username, host);
+          this.session = jsch.getSession(username, host, port);
           this.session.setPassword(password);
           this.session.setConfig("StrictHostKeyChecking", "no");
         }
         case "publickey" -> {
           jsch.addIdentity(keyfile, passphrase);
           jsch.setKnownHosts(known_hosts);
-          this.session = jsch.getSession(username, host);
+          this.session = jsch.getSession(username, host, port);
         }
         default -> throw new SystemException("", "", new Exception());
       }
