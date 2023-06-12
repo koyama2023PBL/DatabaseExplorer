@@ -38,7 +38,7 @@ public class SlowQueryCountService {
       List<QueryTime> queryTimes = reader.read(startTime, endTime);
 
       if(queryTimes.isEmpty()){
-        throw new ApplicationException("","",new Exception());
+        return new SlowQueryCountApiResponse(startTime, endTime, request.getQueryTimeAtLeast(), -1);
       }
 
       int slowQueryNum = queryTimes.stream()

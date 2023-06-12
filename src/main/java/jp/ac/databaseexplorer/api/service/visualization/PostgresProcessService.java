@@ -41,7 +41,7 @@ public class PostgresProcessService {
 
       //プロセス情報がない場合はエラー
       if(postgresProcessData.isEmpty()) {
-        throw new ApplicationException("", "", new Exception());
+        return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null, null);
       }
 
       boolean masterProcess = postgresProcessData.stream().allMatch(ProcessStatus::getMasterProcess);
