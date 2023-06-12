@@ -322,12 +322,23 @@ class VisualizeControllerTest {
     //Arrange
     String startTimeStr = "20230501000001";
     String endTimeStr = "20230501000002";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\"," +
+        "\"masterProcess\":null," +
+        "\"walWriter\":null," +
+        "\"writer\":null," +
+        "\"checkPointer\":null," +
+        "\"statisticsCollector\":null," +
+        "\"autoVacuumLauncher\":null," +
+        "\"autoVacuumWorker\":null," +
+        "\"backendProcess\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError());
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -337,12 +348,22 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\"," +
+        "\"masterProcess\":null," +
+        "\"walWriter\":null," +
+        "\"writer\":null," +
+        "\"checkPointer\":null," +
+        "\"statisticsCollector\":null," +
+        "\"autoVacuumLauncher\":null," +
+        "\"autoVacuumWorker\":null," +
+        "\"backendProcess\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError())
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
         .andReturn();
 
   }
@@ -353,14 +374,23 @@ class VisualizeControllerTest {
     // Arrange
     String startTimeStr = "20400401235950";
     String endTimeStr = "20400501000010";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\"," +
+        "\"masterProcess\":null," +
+        "\"walWriter\":null," +
+        "\"writer\":null," +
+        "\"checkPointer\":null," +
+        "\"statisticsCollector\":null," +
+        "\"autoVacuumLauncher\":null," +
+        "\"autoVacuumWorker\":null," +
+        "\"backendProcess\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr))
-        .andExpect(status().is5xxServerError())
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
         .andReturn();
-
   }
 
   @Test
@@ -522,15 +552,17 @@ class VisualizeControllerTest {
     //Arrange
     String startTimeStr = "20230501000001";
     String endTimeStr = "20230501000002";
-    //String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"querytime\":5,\"count\":1}";
     String threshold = "5";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"querytime\":5,\"count\":-1}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
             .param("querytime", threshold))
-        .andExpect(status().is5xxServerError());
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse));
   }
 
   @Test
@@ -540,14 +572,16 @@ class VisualizeControllerTest {
     String startTimeStr = "19900401235950";
     String endTimeStr = "19900501000010";
     String threshold = "5";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"querytime\":5,\"count\":-1}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
             .param("querytime", threshold))
-        .andExpect(status().is5xxServerError())
-        .andReturn();
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse));
 
   }
 
@@ -558,14 +592,16 @@ class VisualizeControllerTest {
     String startTimeStr = "20400401235950";
     String endTimeStr = "20400501000010";
     String threshold = "5";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"querytime\":5,\"count\":-1}";
+
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr)
             .param("querytime", threshold))
-        .andExpect(status().is5xxServerError())
-        .andReturn();
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse));
 
   }
 
