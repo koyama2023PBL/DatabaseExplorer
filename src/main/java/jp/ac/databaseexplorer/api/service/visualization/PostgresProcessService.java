@@ -40,7 +40,7 @@ public class PostgresProcessService {
       List<ProcessStatus> postgresProcessData = reader.read(startTime, endTime);
 
       //プロセス情報がない場合はエラー
-      if(postgresProcessData.isEmpty()) {
+      if (postgresProcessData.isEmpty()) {
         return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null, null);
       }
 
@@ -56,7 +56,7 @@ public class PostgresProcessService {
       return new PostgresProcessApiResponse(startTime, endTime, masterProcess, walWriter, writer, checkPointer, statisticsCollector, autoVacuumLauncher, autoVacuumWorker, backendProcess);
     } catch (SystemException se) {
       throw new ApplicationException("APP-00016", "プロセス情報取得処理でシステムエラーが発生しました", se);
-    } catch(ApplicationException ae) {
+    } catch (ApplicationException ae) {
       throw new ApplicationException("APP-00020", "プロセス情報取得処理で業務エラーが発生しました", ae);
     } catch (Exception e) {
       throw new ApplicationException("APP-00017", "プロセス情報取得処理で予期せぬエラーが発生しました", e);

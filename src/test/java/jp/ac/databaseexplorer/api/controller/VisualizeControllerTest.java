@@ -1,4 +1,5 @@
 package jp.ac.databaseexplorer.api.controller;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +8,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-//@RunWith(SpringJUnit4ClassRunner.class)
 class VisualizeControllerTest {
-
-  private MockMvc mockMvc;
 
   @Autowired
   VisualizeController visualizeController;
+  private MockMvc mockMvc;
 
   @BeforeEach
   public void setup() {
@@ -39,11 +39,11 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().isOk())
-      .andExpect(content().json(expectResponse))
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -64,11 +64,11 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().isOk())
-      .andExpect(content().json(expectResponse))
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -87,11 +87,11 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().isOk())
-      .andExpect(content().json(expectResponse))
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -150,11 +150,11 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().isOk())
-      .andExpect(content().json(expectResponse))
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isOk())
+        .andExpect(content().json(expectResponse))
+        .andReturn();
 
   }
 
@@ -187,10 +187,10 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().is5xxServerError())
-      .andReturn();
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().is5xxServerError())
+        .andReturn();
 
   }
 
@@ -203,12 +203,10 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-      .param("starttime", startTimeStr)
-      .param("endtime", endTimeStr))
-      .andExpect(status().isBadRequest());
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr))
+        .andExpect(status().isBadRequest());
   }
-
-
 
   //ここからポスグレのプロセスのテスト
 
@@ -518,9 +516,9 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/slow-query-counts")
-        .param("starttime", startTimeStr)
-        .param("endtime", endTimeStr)
-        .param("querytime", threshold))
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("querytime", threshold))
         .andExpect(status().isOk())
         .andExpect(content().json(expectResponse))
         .andReturn();
@@ -665,15 +663,15 @@ class VisualizeControllerTest {
     String endTimeStr = "20230501000200";
     String dbname = "explorer";
     Double hitCount = 189D - 8D; //hitCount.max - hitCount.min
-    Double readCount = 218D- 9D; //readCount.max - readCount.min
+    Double readCount = 218D - 9D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:02:00\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
-        .param("starttime", startTimeStr)
-        .param("endtime", endTimeStr)
-        .param("dbname", dbname))
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("dbname", dbname))
         .andExpect(status().isOk())
         .andExpect(content().json(expectResponse))
         .andReturn();
@@ -690,7 +688,7 @@ class VisualizeControllerTest {
     Double hitCount = 8D; //hitCount.max - hitCount.min
     Double readCount = 9D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -713,7 +711,7 @@ class VisualizeControllerTest {
 //    double readCount = 42- 9; //readCount.max - readCount.min
     Double hitRate = -1.0;
     String dbname = "explorer";
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -753,7 +751,7 @@ class VisualizeControllerTest {
     Double hitCount = 3624930D - 3624698D; //hitCount.max - hitCount.min
     Double readCount = 4346806D - 4346806D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -776,7 +774,7 @@ class VisualizeControllerTest {
     Double hitCount = 8D; //hitCount.max - hitCount.min
     Double readCount = 9D; //readCount.max - readCount.min
     Double hitRate = hitCount / (readCount + hitCount);
-    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -796,7 +794,7 @@ class VisualizeControllerTest {
     String endTimeStr = "19900501000010";
     Double hitRate = -1.0;
     String dbname = "explorer";
-    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -816,7 +814,7 @@ class VisualizeControllerTest {
     String endTimeStr = "20400501000010";
     Double hitRate = -1.0;
     String dbname = "explorer";
-    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"dbname\":"+ dbname + ",\"hitrate\":"+ hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -840,9 +838,9 @@ class VisualizeControllerTest {
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
-        .param("starttime", startTimeStr)
-        .param("endtime", endTimeStr)
-        .param("dbname", dbname))
+            .param("starttime", startTimeStr)
+            .param("endtime", endTimeStr)
+            .param("dbname", dbname))
         .andExpect(status().is5xxServerError())
         .andReturn();
 
@@ -874,7 +872,7 @@ class VisualizeControllerTest {
     String endTimeStr = "20230501000000";
     String dbname = "explorer2";
     Double hitRate = -1D;
-    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":"+ dbname + ",\"hitrate\":" + hitRate + "}";
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"dbname\":" + dbname + ",\"hitrate\":" + hitRate + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/hit-rate")
@@ -885,7 +883,7 @@ class VisualizeControllerTest {
         .andExpect(content().json(expectResponse))
         .andReturn();
   }
-  
+
   //ここからクエリの平均時間のテスト
 
   @Test
@@ -896,9 +894,9 @@ class VisualizeControllerTest {
     String endTimeStr = "20230501000020";
     String kind = "1";
     Double calls = 44D - 7D; //calls.max - calls.min
-    Double execTime = 447.88- 56.83; //execTime.max - execTime.min
+    Double execTime = 447.88 - 56.83; //execTime.max - execTime.min
     Double time = execTime / calls;
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:20\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:20\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -921,7 +919,7 @@ class VisualizeControllerTest {
     Double execTime = 56.83; //execTime.max - execTime.min
     Double calls = 7D; //calls.max - calls.min
     Double time = execTime / calls;
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:00\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -942,7 +940,7 @@ class VisualizeControllerTest {
     String endTimeStr = "20230501000002";
     Double time = -1.0;
     String kind = "1";
-    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/01 00:00:01\",\"endtime\":\"2023/05/01 00:00:02\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -1000,7 +998,7 @@ class VisualizeControllerTest {
     Double execTime = 48353023.05 - 48350084.87; //execTime.max - execTime.min
     Double calls = 4838496D - 4838148D; //calls.max - calls.min
     Double time = execTime / calls;
-    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2023/05/28 23:57:10\",\"endtime\":\"2024/05/01 00:00:00\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -1023,7 +1021,7 @@ class VisualizeControllerTest {
     Double execTime = 129.6D; //execTime.max - execTime.min
     Double calls = 16D; //calls.max - calls.min
     Double time = execTime / calls;
-    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2020/05/28 23:57:10\",\"endtime\":\"2023/05/01 00:00:00\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -1043,7 +1041,7 @@ class VisualizeControllerTest {
     String endTimeStr = "19900501000010";
     Double time = -1.0;
     String kind = "1";
-    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"1990/04/01 23:59:50\",\"endtime\":\"1990/05/01 00:00:10\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")
@@ -1063,7 +1061,7 @@ class VisualizeControllerTest {
     String endTimeStr = "20400501000010";
     Double time = -1.0;
     String kind = "4";
-    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"kind\":"+ kind + ",\"time\":"+ time + "}";
+    String expectResponse = "{\"starttime\":\"2040/04/01 23:59:50\",\"endtime\":\"2040/05/01 00:00:10\",\"kind\":" + kind + ",\"time\":" + time + "}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/average-query-time")

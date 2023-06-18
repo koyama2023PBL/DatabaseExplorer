@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;/**
+import java.util.Objects;
+
+/**
  * データベースから取得したクエリ実行時間の平均を取得するサービスクラス
  */
 @Service
@@ -26,8 +28,8 @@ public class AverageQueryTimeService {
   /**
    * クエリの平均実行時間を取得する
    */
-  public AverageQueryTimeApiResponse getAverageQueryTime(AverageQueryTimeApiRequest request)throws ApplicationException {
-    try{
+  public AverageQueryTimeApiResponse getAverageQueryTime(AverageQueryTimeApiRequest request) throws ApplicationException {
+    try {
 
       // インプット項目チェック
       if (request.getStartTime().after(request.getEndTime())) {
@@ -40,15 +42,15 @@ public class AverageQueryTimeService {
 
       Double averageExecTime = -1D; //Countが0の場合には-1を返す
 
-      if(execTimes.size() == 0){
+      if (execTimes.size() == 0) {
         averageExecTime = -1.0;
-      }else if(execTimes.size() == 1){
+      } else if (execTimes.size() == 1) {
         averageExecTime = execTimes.get(0).getTotalExecTime() / execTimes.get(0).getCalls();
-      }else{
+      } else {
         Double totalExecTime = execTimes.stream().mapToDouble(AvgExecTime::getTotalExecTime).max().orElse(0) - execTimes.stream().mapToDouble(AvgExecTime::getTotalExecTime).min().orElse(0);
         Double totalExecCount = execTimes.stream().mapToDouble(AvgExecTime::getCalls).max().orElse(0) - execTimes.stream().mapToDouble(AvgExecTime::getCalls).min().orElse(0);
 
-        if(totalExecCount != 0){
+        if (totalExecCount != 0) {
           averageExecTime = totalExecTime / totalExecCount;
         }
       }

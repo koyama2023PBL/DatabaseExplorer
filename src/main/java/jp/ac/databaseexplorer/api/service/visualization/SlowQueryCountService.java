@@ -26,7 +26,7 @@ public class SlowQueryCountService {
    * スロークエリの数を取得する
    */
   public SlowQueryCountApiResponse getSlowQueryCount(SlowQueryCountApiRequest request) throws ApplicationException {
-    try{
+    try {
 
       // インプット項目チェック
       if (request.getStartTime().after(request.getEndTime())) {
@@ -37,7 +37,7 @@ public class SlowQueryCountService {
       Date endTime = request.getEndTime();
       List<QueryTime> queryTimes = reader.read(startTime, endTime);
 
-      if(queryTimes.isEmpty()){
+      if (queryTimes.isEmpty()) {
         return new SlowQueryCountApiResponse(startTime, endTime, request.getQueryTimeAtLeast(), -1);
       }
 

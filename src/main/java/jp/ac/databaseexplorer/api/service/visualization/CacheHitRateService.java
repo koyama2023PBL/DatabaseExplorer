@@ -25,8 +25,7 @@ public class CacheHitRateService {
    * キャッシュヒット率を取得する
    */
   public CacheHitRateApiResponse getCacheHitRate(CacheHitRateApiRequest request) throws ApplicationException {
-
-    try{
+    try {
 
       // インプット項目チェック
       if (request.getStartTime().after(request.getEndTime())) {
@@ -43,16 +42,15 @@ public class CacheHitRateService {
       if (cacheHits.size() == 1) {
         numHit = cacheHits.stream().mapToDouble(CacheHit::getHit).findFirst().orElse(0);
         numRead = cacheHits.stream().mapToDouble(CacheHit::getRead).findFirst().orElse(0);
-      }else if(cacheHits.size() > 1){
+      } else if (cacheHits.size() > 1) {
         numHit = cacheHits.stream().mapToDouble(CacheHit::getHit).max().orElse(0) - cacheHits.stream().mapToDouble(CacheHit::getHit).min().orElse(0);
         numRead = cacheHits.stream().mapToDouble(CacheHit::getRead).max().orElse(0) - cacheHits.stream().mapToDouble(CacheHit::getRead).min().orElse(0);
       }
 
       Double cacheHitRateValue = -1D; //要検討。Hitが０のときは０を返すでよい。該当時間内で1回もクエリが実行されていないときは-1を返すでよい？(nullを返すとマズいので）
-      if(numRead != 0 || numHit != 0){
+      if (numRead != 0 || numHit != 0) {
         cacheHitRateValue = numHit / (numRead + numHit);
       }
-
 
       return new CacheHitRateApiResponse(startTime, endTime, request.getDatabaseName(), cacheHitRateValue);
     } catch (SystemException se) {
