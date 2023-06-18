@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
-import java.time.ZonedDateTime;
-import java.time.ZoneId;
 
 /**
  * sarコマンドでCPUのシステム統計情報を収集します。
@@ -39,18 +37,20 @@ public class SarCpuJob extends VisualizeJobBase {
    */
   @Override
   public void execute() throws ApplicationException {
-    systemLogger.info("SarCpuJob#execute() called.");
+    //確認用
+    //systemLogger.info("SarCpuJob#execute() called.");
     try {
       String result = ssh.execute("sar -u 1 1");
-      ZonedDateTime nowInTokyo = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
-      Date date = Date.from(nowInTokyo.toInstant());
+      Date now = new Date();
+//      ZonedDateTime nowInTokyo = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+//      Date date = Date.from(nowInTokyo.toInstant());
 
       String[] lines = result.split("\n");
       for (String line : lines) {
         if (line.startsWith("Average")) {
           String[] data = line.split("\\s+");
           SarCpu sarCpu = new SarCpu();
-          sarCpu.setTimestamp(date);
+          sarCpu.setTimestamp(now);
           sarCpu.setCpuUser(Double.parseDouble(data[2]));
           sarCpu.setCpuNice(Double.parseDouble(data[3]));
           sarCpu.setCpuSystem(Double.parseDouble(data[4]));
