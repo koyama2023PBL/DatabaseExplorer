@@ -29,9 +29,20 @@ public class PostgresProcessService {
    */
   public PostgresProcessApiResponse getPostgresProcess(PostgresProcessApiRequest request) throws ApplicationException {
     try {
+
+      // インプット項目チェック
+      if (request.getStartTime().after(request.getEndTime())) {
+        throw new ApplicationException("", "", new Exception());
+      }
+
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
       List<ProcessStatus> postgresProcessData = reader.read(startTime, endTime);
+
+      //プロセス情報がない場合はエラー
+      if (postgresProcessData.isEmpty()) {
+        return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null, null);
+      }
 
       boolean masterProcess = postgresProcessData.stream().allMatch(ProcessStatus::getMasterProcess);
       boolean backendProcess = postgresProcessData.stream().allMatch(ProcessStatus::getBackendProcess);
@@ -45,7 +56,8 @@ public class PostgresProcessService {
       return new PostgresProcessApiResponse(startTime, endTime, masterProcess, walWriter, writer, checkPointer, statisticsCollector, autoVacuumLauncher, autoVacuumWorker, backendProcess);
     } catch (SystemException se) {
       throw new ApplicationException("APP-00016", "プロセス情報取得処理でシステムエラーが発生しました", se);
-
+    } catch (ApplicationException ae) {
+      throw new ApplicationException("APP-00020", "プロセス情報取得処理で業務エラーが発生しました", ae);
     } catch (Exception e) {
       throw new ApplicationException("APP-00017", "プロセス情報取得処理で予期せぬエラーが発生しました", e);
     }
