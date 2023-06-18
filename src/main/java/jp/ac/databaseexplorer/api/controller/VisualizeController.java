@@ -29,7 +29,7 @@ public class VisualizeController {
   public static final Logger systemLogger =  LoggerFactory.getLogger("SYSTEM_LOG");
   public static final Logger errorLogger =  LoggerFactory.getLogger("ERROR_LOG");
   public static final Logger operationLogger =  LoggerFactory.getLogger("OPERATION_LOG");
-
+  
   private static final String STRING_TO_DATE = "yyyyMMddHHmmss";
 
   /**
@@ -80,7 +80,7 @@ public class VisualizeController {
       systemLogger.info("cpuUsage end。 Response:" + response);
       long methodEndTime = System.currentTimeMillis();
       operationLogger.info("cpuUsage operationTime:" + (methodEndTime - methodBeginTime) + " ms");
-      System.out.println(response);
+
       return ResponseEntity.ok(response);
       }
     catch (ParseException pe) {
