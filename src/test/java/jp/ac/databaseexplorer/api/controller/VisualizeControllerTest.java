@@ -61,16 +61,8 @@ class VisualizeControllerTest {
     //Double idle2 = 29.96;
     String expectResponse = "{\"starttime\":\"2023/05/28 23:59:50\",\"endtime\":\"2024/05/01 00:12:10\"," +
         "\"data\":[{\"date\":\"2023/05/28 23:59:50\",\"usage\":" + (maxUsage - idle1) + "}]}";
-    System.out.println(expectResponse);
 
     // Act
-    String response = mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
-        .param("starttime", startTimeStr)
-        .param("endtime", endTimeStr))
-        .andReturn().getResponse().getContentAsString();
-
-    System.out.println(response);
-
     mockMvc.perform(get("/database-explorer/api/visualization/cpu-usage")
             .param("starttime", startTimeStr)
             .param("endtime", endTimeStr))
