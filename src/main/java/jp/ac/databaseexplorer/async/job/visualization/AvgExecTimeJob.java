@@ -50,7 +50,7 @@ public class AvgExecTimeJob extends VisualizeJobBase {
       }
 
     } catch (Exception ex) {
-      systemLogger.error("クエリの合計実行時間取得でエラーが発生しました");
+      systemLogger.error("クエリ平均実行時間取得の非同期処理でエラーが発生しました");
       throw new ApplicationException("APP-00030", "クエリ平均実行時間取得の非同期処理でエラーが発生しました", ex);
     }
 
