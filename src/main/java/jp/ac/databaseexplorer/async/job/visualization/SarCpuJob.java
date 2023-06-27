@@ -61,8 +61,8 @@ public class SarCpuJob extends VisualizeJobBase {
         }
       }
     } catch (Exception ex) {
-      systemLogger.error("CPUのシステム統計情報の取得でエラーが発生しました");
-      throw new ApplicationException("APP-00028", "CPUのシステム統計情報の取得でエラーが発生しました", ex);
+      systemLogger.error("CPUのシステム統計情報取得の非同期処理でエラーが発生しました");
+      throw new ApplicationException("APP-00028", "CPUのシステム統計情報取得の非同期処理でエラーが発生しました", ex);
     }
     //systemLogger.info(ssh.execute("sar -u 1 1"));
     //System.out.println(ssh.execute("ls"));
