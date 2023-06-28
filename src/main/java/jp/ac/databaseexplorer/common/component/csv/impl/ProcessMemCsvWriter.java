@@ -12,7 +12,7 @@ public class ProcessMemCsvWriter extends CsvWriterBase {
   }
 
   @Override
-  protected  String getHeader() {
+  protected String getHeader() {
     return "timestamp,memUsage,memUsageRatio,connections";
   }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * sarコマンドで取得したデータを保持するモデルクラス
+ * プロセスメモリ使用率・量と実行中のクエリ数のデータを保持するモデルクラス
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

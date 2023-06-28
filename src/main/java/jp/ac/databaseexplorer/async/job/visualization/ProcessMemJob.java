@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ProcessMemJob extends VisualizeJobBase {
   /**
    * Logger
    */
-  private static final Logger systemLogger =  LoggerFactory.getLogger("SYSTEM_LOG");
+  private static final Logger systemLogger = LoggerFactory.getLogger("SYSTEM_LOG");
 
   /**
    * Bean
@@ -58,9 +59,9 @@ public class ProcessMemJob extends VisualizeJobBase {
       //プロセスメモリの使用状況（プロセスごと）を合計する
       String[] lines = result.split("\n");
       for (String line : lines) {
-          String[] data = line.split("\\s+");
-          memUsageSum += Integer.parseInt(data[1]);
-          memUsageRatioSum += Double.parseDouble(data[2]);
+        String[] data = line.split("\\s+");
+        memUsageSum += Integer.parseInt(data[1]);
+        memUsageRatioSum += Double.parseDouble(data[2]);
       }
 
       ProcessMem processMem = new ProcessMem();

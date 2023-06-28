@@ -5,7 +5,7 @@ import jp.ac.databaseexplorer.storage.visualization.ProcessMem;
 import org.springframework.stereotype.Component;
 
 /**
- * sarコマンドで取得したCPU使用率のCSVファイルを読み込むクラス
+ * プロセスメモリ使用率のCSVファイルを読み込むクラス
  */
 @Component
 public class ProcessMemCsvReader extends CsvWithTimestampReaderBase<ProcessMem> {
