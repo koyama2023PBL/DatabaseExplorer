@@ -46,7 +46,7 @@ public class ProcessMemJob extends VisualizeJobBase {
 
     try {
       //プロセスメモリの使用状況を取得する
-      String result = ssh.execute("ps aux | grep postgres | awk '{print $1, $6, $4}'");
+      String result = ssh.execute("ps aux | grep postgres | awk '{print $1, $6, $4, $11}'");
       //実行中のクエリ数を取得する
       String sql = "SELECT COUNT(state = 'active' OR NULL) connections FROM pg_stat_activity;";
       List<Integer> connectionNums = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("connections"));
@@ -59,6 +59,9 @@ public class ProcessMemJob extends VisualizeJobBase {
       //プロセスメモリの使用状況（プロセスごと）を合計する
       String[] lines = result.split("\n");
       for (String line : lines) {
+        if(line.contains("grep")) {
+          continue;
+        }
         String[] data = line.split("\\s+");
         memUsageSum += Integer.parseInt(data[1]);
         memUsageRatioSum += Double.parseDouble(data[2]);
