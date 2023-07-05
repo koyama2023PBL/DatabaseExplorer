@@ -12,7 +12,7 @@ public class ProcessMemCsvReader extends CsvWithTimestampReaderBase<ProcessMem> 
 
   @Override
   protected String filePath() {
-    return "src/main/resources/storage/visualization/process-mem.csv";
+    return "src/main/resources/storage/visualization/ps-process-mem.csv";
   }
 
   @Override

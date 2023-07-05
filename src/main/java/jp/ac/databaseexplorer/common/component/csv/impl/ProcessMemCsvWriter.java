@@ -8,7 +8,7 @@ public class ProcessMemCsvWriter extends CsvWriterBase {
 
   @Override
   protected String filePath() {
-    return "src/main/resources/storage/visualization/process-mem.csv";
+    return "src/main/resources/storage/visualization/ps-process-mem.csv";
   }
 
   @Override
