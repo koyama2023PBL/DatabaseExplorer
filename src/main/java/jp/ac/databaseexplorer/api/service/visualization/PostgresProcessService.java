@@ -45,7 +45,6 @@ public class PostgresProcessService {
       }
 
       boolean masterProcess = true;
-      boolean backendProcess = true;
       boolean autoVacuumLauncher = true;
       boolean checkPointer = true;
       boolean statisticsCollector = true;
