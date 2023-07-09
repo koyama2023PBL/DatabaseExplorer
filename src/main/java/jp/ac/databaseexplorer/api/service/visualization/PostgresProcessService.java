@@ -44,14 +44,26 @@ public class PostgresProcessService {
         return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null, null);
       }
 
-      boolean masterProcess = postgresProcessData.stream().allMatch(ProcessStatus::getMasterProcess);
-      boolean backendProcess = postgresProcessData.stream().allMatch(ProcessStatus::getBackendProcess);
-      boolean autoVacuumLauncher = postgresProcessData.stream().allMatch(ProcessStatus::getAutoVacuumLauncher);
-      boolean checkPointer = postgresProcessData.stream().allMatch(ProcessStatus::getCheckPointer);
-      boolean statisticsCollector = postgresProcessData.stream().allMatch(ProcessStatus::getStatisticsCollector);
-      boolean walWriter = postgresProcessData.stream().allMatch(ProcessStatus::getWalWriter);
-      boolean writer = postgresProcessData.stream().allMatch(ProcessStatus::getWriter);
-      boolean autoVacuumWorker = postgresProcessData.stream().allMatch(ProcessStatus::getAutoVacuumWorker);
+      boolean masterProcess = true;
+      boolean backendProcess = true;
+      boolean autoVacuumLauncher = true;
+      boolean checkPointer = true;
+      boolean statisticsCollector = true;
+      boolean walWriter = true;
+      boolean writer = true;
+      boolean autoVacuumWorker = true;
+
+
+      for(ProcessStatus status: postgresProcessData){
+        masterProcess &= status.getMasterProcess();
+        backendProcess &= status.getBackendProcess();
+        autoVacuumLauncher &= status.getAutoVacuumLauncher();
+        checkPointer &= status.getCheckPointer();
+        statisticsCollector &= status.getStatisticsCollector();
+        walWriter &= status.getWalWriter();
+        writer &= status.getWriter();
+        autoVacuumWorker &= status.getAutoVacuumWorker();
+      }
 
       return new PostgresProcessApiResponse(startTime, endTime, masterProcess, walWriter, writer, checkPointer, statisticsCollector, autoVacuumLauncher, autoVacuumWorker, backendProcess);
     } catch (SystemException se) {

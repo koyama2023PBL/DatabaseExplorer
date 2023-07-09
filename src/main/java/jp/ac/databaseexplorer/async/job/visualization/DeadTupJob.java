@@ -11,10 +11,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 /**
- * プロセスメモリの使用状況を収集します。
+ * デッドタプルの状況を取得するジョブ
  */
 @Service
 @RequiredArgsConstructor
@@ -29,7 +29,6 @@ public class DeadTupJob extends VisualizeJobBase {
    * Bean
    */
 
-  //プロセスメモリの使用状況の書き込み処理をここで書く
   @Autowired
   private final DeadTupCsvWriter deadTupCsvWriter;
 
@@ -51,15 +50,16 @@ public class DeadTupJob extends VisualizeJobBase {
           "FROM pg_stat_user_tables;";
 
       //それぞれ配列の大きさは１になる
-      List<Integer> deadTupCount = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("dead_tup_count"));
-      List<Double> deadTupRatio = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getDouble("dead_tup_ratio"));
+      Map<String, Object> result = jdbcTemplate.queryForMap(sql);
+      Integer deadTupCount = Integer.valueOf(result.get("dead_tup_count").toString());
+      Double deadTupRatio = Double.valueOf(result.get("dead_tup_ratio").toString());
       Date now = new Date();
 
       //デッドタプルの状況を書き込む
       DeadTup deadTup = new DeadTup();
       deadTup.setTimestamp(now);
-      deadTup.setDeadTupCount(deadTupCount.get(0));
-      deadTup.setDeadTupRatio(deadTupRatio.get(0));
+      deadTup.setDeadTupCount(deadTupCount);
+      deadTup.setDeadTupRatio(deadTupRatio);
       deadTupCsvWriter.write(deadTup);
     } catch (Exception ex) {
       systemLogger.error("デッドタプル数・割合取得の非同期処理でエラーが発生しました");
