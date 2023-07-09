@@ -13,6 +13,6 @@ public class ProcessStatusCsvWriter extends CsvWriterBase {
 
   @Override
   protected  String getHeader() {
-    return "timestamp,master,checkPointer,autoVacuumLauncher,walWriter,writer,statisticsCollector,autoVacuumWorker,backendProcess";
+    return "timestamp,master,checkPointer,autoVacuumLauncher,walWriter,writer,statisticsCollector,autoVacuumWorker";
   }
 }
