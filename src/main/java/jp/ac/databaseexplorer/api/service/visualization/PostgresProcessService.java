@@ -41,7 +41,7 @@ public class PostgresProcessService {
 
       //プロセス情報がない場合はエラー
       if (postgresProcessData.isEmpty()) {
-        return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null, null);
+        return new PostgresProcessApiResponse(startTime, endTime, null, null, null, null, null, null, null);
       }
 
       boolean masterProcess = true;
@@ -56,16 +56,15 @@ public class PostgresProcessService {
 
       for(ProcessStatus status: postgresProcessData){
         masterProcess &= status.getMasterProcess();
-        backendProcess &= status.getBackendProcess();
-        autoVacuumLauncher &= status.getAutoVacuumLauncher();
-        checkPointer &= status.getCheckPointer();
-        statisticsCollector &= status.getStatisticsCollector();
-        walWriter &= status.getWalWriter();
-        writer &= status.getWriter();
-        autoVacuumWorker &= status.getAutoVacuumWorker();
+        autoVacuumLauncher &= status.getAutoVacuumLauncherProcess();
+        checkPointer &= status.getCheckPointerProcess();
+        statisticsCollector &= status.getStatisticsCollectorProcess();
+        walWriter &= status.getWalWriterProcess();
+        writer &= status.getWriterProcess();
+        autoVacuumWorker &= status.getAutoVacuumWorkerProcess();
       }
 
-      return new PostgresProcessApiResponse(startTime, endTime, masterProcess, walWriter, writer, checkPointer, statisticsCollector, autoVacuumLauncher, autoVacuumWorker, backendProcess);
+      return new PostgresProcessApiResponse(startTime, endTime, masterProcess, walWriter, writer, checkPointer, statisticsCollector, autoVacuumLauncher, autoVacuumWorker);
     } catch (SystemException se) {
       throw new ApplicationException("APP-00016", "プロセス情報取得処理でシステムエラーが発生しました", se);
     } catch (ApplicationException ae) {

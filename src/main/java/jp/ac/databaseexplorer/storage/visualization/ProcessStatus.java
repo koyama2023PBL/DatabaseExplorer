@@ -5,61 +5,66 @@ import jp.ac.databaseexplorer.storage.base.CsvWithTimestampModelBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 /**
  * プロセスの状態を保持するモデルクラス
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+
 public class ProcessStatus extends CsvWithTimestampModelBase{
 
+  public ProcessStatus() {
+    this.master = "0";
+    this.checkPointer = "0";
+    this.autoVacuumLauncher = "0";
+    this.walWriter = "0";
+    this.writer = "0";
+    this.statisticsCollector = "0";
+    this.autoVacuumWorker = "0";
+  }
+
   @CsvBindByPosition(position = 1)
-  private String master;
+  protected String master;
   public Boolean getMasterProcess() {
     return ConvertToBoolean(master);
   }
 
   @CsvBindByPosition(position = 2)
-  private String checkPointer;
-  public Boolean getCheckPointer() {
+  protected String checkPointer;
+  public Boolean getCheckPointerProcess() {
     return ConvertToBoolean(checkPointer);
   }
 
   @CsvBindByPosition(position = 3)
-  private String autoVacuumLauncher;
-  public Boolean getAutoVacuumLauncher() {
+  protected String autoVacuumLauncher;
+  public Boolean getAutoVacuumLauncherProcess() {
     return ConvertToBoolean(autoVacuumLauncher);
   }
 
   @CsvBindByPosition(position = 4)
-  private String walWriter;
-  public Boolean getWalWriter() {
+  protected String walWriter;
+  public Boolean getWalWriterProcess() {
     return ConvertToBoolean(walWriter);
   }
 
   @CsvBindByPosition(position = 5)
-  private String writer;
-  public Boolean getWriter() {
+  protected String writer;
+  public Boolean getWriterProcess() {
     return ConvertToBoolean(writer);
   }
 
   @CsvBindByPosition(position = 6)
-  private String statisticsCollector;
-  public Boolean getStatisticsCollector() {
+  protected String statisticsCollector;
+  public Boolean getStatisticsCollectorProcess() {
     return ConvertToBoolean(statisticsCollector);
   }
 
   @CsvBindByPosition(position = 7)
-  private String autoVacuumWorker;
-  public Boolean getAutoVacuumWorker() {
+  protected String autoVacuumWorker;
+  public Boolean getAutoVacuumWorkerProcess() {
     return ConvertToBoolean(autoVacuumWorker);
   }
-
-  @CsvBindByPosition(position = 8)
-  private String backendProcess;
-  public Boolean getBackendProcess() {
-    return ConvertToBoolean(backendProcess);
-  }
-
 
   private Boolean ConvertToBoolean(String value) {
     if ("1".equals(value)) {

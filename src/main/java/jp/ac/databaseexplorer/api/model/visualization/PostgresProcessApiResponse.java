@@ -55,7 +55,4 @@ public class PostgresProcessApiResponse {
   @JsonProperty("autoVacuumWorker")
   private Boolean autoVacuumWorker;
 
-
-  @JsonProperty("backendProcess")
-  private Boolean backendProcess;
 }
