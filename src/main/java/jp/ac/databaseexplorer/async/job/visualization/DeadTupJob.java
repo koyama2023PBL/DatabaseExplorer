@@ -52,7 +52,7 @@ public class DeadTupJob extends VisualizeJobBase {
 
       //それぞれ配列の大きさは１になる
       List<Integer> deadTupCount = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("dead_tup_count"));
-      List<Double> deadTupRatio = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getDouble("dead_tup_count"));
+      List<Double> deadTupRatio = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getDouble("dead_tup_ratio"));
       Date now = new Date();
 
       //デッドタプルの状況を書き込む
