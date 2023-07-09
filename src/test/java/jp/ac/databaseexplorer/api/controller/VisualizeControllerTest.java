@@ -223,8 +223,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":false," +
         "\"statisticsCollector\":true," +
         "\"autoVacuumLauncher\":false," +
-        "\"autoVacuumWorker\":true," +
-        "\"backendProcess\":true}";
+        "\"autoVacuumWorker\":true}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -249,8 +248,7 @@ class VisualizeControllerTest {
 //        "\"checkPointer\":true," +
 //        "\"statisticsCollector\":true," +
 //        "\"autoVacuumLauncher\":true," +
-//        "\"autoVacuumWorker\":true," +
-//        "\"backendProcess\":true}";
+//        "\"autoVacuumWorker\":true}";
 //
 //    // Act
 //    mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -275,8 +273,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":false," +
         "\"statisticsCollector\":true," +
         "\"autoVacuumLauncher\":true," +
-        "\"autoVacuumWorker\":true," +
-        "\"backendProcess\":true}";
+        "\"autoVacuumWorker\":true}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -301,8 +298,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":false," +
         "\"statisticsCollector\":true," +
         "\"autoVacuumLauncher\":true," +
-        "\"autoVacuumWorker\":true," +
-        "\"backendProcess\":true}";
+        "\"autoVacuumWorker\":true}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -327,8 +323,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":null," +
         "\"statisticsCollector\":null," +
         "\"autoVacuumLauncher\":null," +
-        "\"autoVacuumWorker\":null," +
-        "\"backendProcess\":null}";
+        "\"autoVacuumWorker\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -353,8 +348,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":null," +
         "\"statisticsCollector\":null," +
         "\"autoVacuumLauncher\":null," +
-        "\"autoVacuumWorker\":null," +
-        "\"backendProcess\":null}";
+        "\"autoVacuumWorker\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
@@ -379,8 +373,7 @@ class VisualizeControllerTest {
         "\"checkPointer\":null," +
         "\"statisticsCollector\":null," +
         "\"autoVacuumLauncher\":null," +
-        "\"autoVacuumWorker\":null," +
-        "\"backendProcess\":null}";
+        "\"autoVacuumWorker\":null}";
 
     // Act
     mockMvc.perform(get("/database-explorer/api/visualization/processes")
