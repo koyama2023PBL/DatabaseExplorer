@@ -11,10 +11,10 @@ import java.util.List;
 public interface AvgExecTimeRepository extends JpaRepository<AvgExecTime, Short> {
   @Query(value = "SELECT " +
       "CASE " +
-      "WHEN query LIKE 'SELECT%' THEN 1 " +
-      "WHEN query LIKE 'INSERT%' THEN 2 " +
-      "WHEN query LIKE 'UPDATE%' THEN 3 " +
-      "WHEN query LIKE 'DELETE%' THEN 4 " +
+      "WHEN query ILIKE '%INSERT%' THEN 2 " +
+      "WHEN query ILIKE '%UPDATE%' THEN 3 " +
+      "WHEN query ILIKE '%DELETE%' THEN 4 " +
+      "WHEN query ILIKE '%SELECT%' THEN 1 " +
       "END AS kind, " +
       "SUM(calls) AS calls, " +
       "SUM(total_exec_time) AS total_exec_time " +
