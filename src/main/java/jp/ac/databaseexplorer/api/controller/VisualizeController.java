@@ -57,6 +57,11 @@ public class VisualizeController {
    */
   private final SlowQueryCountService slowQueryCountService;
 
+  /**
+   * プロセスメモリ使用量を取得するサービス
+   */
+  private final MemUsageService memUsageService;
+
 
   /**
    * CPU使用率を取得するAPI
@@ -269,4 +274,48 @@ public class VisualizeController {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  /** プロセスメモリ使用量を取得するAPI
+   * @param startTime 取得期間の開始時間
+   * @param endTime 取得期間の終了時間
+   * @return MemUsageApiResponse
+   */
+
+  @GetMapping
+  @RequestMapping(value = "/mem-usage", method = RequestMethod.GET)
+  public ResponseEntity<?> memUsage(
+      @RequestParam("starttime")String startTime,
+      @RequestParam("endtime")String endTime) {
+    try {
+      long methodBeginTime = System.currentTimeMillis();
+      systemLogger.info("memUsage start。 startTime:" + startTime + " endTime:" + endTime);
+
+      SimpleDateFormat dtFt = new SimpleDateFormat(STRING_TO_DATE);
+      Date startTimeDate = dtFt.parse(startTime);
+      Date endTimeDate = dtFt.parse(endTime);
+      MemUsageApiRequest request = new MemUsageApiRequest(startTimeDate, endTimeDate);
+      MemUsageApiResponse response = memUsageService.getMemUsage(request);
+
+      systemLogger.info("memUsage end。 Response:" + response);
+      long methodEndTime = System.currentTimeMillis();
+      operationLogger.info("memUsage operationTime:" + (methodEndTime - methodBeginTime) + " ms");
+
+      return ResponseEntity.ok(response);
+    }
+    catch (ParseException pe) {
+      errorLogger.error("memUsage:ParseException", pe);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    catch (ApplicationException ae) {
+      errorLogger.error("memUsage:ApplicationException", ae);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    catch(Exception e) {
+      errorLogger.error("memUsage:Exception", e);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
 }
