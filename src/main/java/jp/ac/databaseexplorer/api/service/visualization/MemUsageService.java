@@ -45,10 +45,16 @@ public class MemUsageService {
       //work_memに設定値（メガバイト）を取得
       String workMemSql = "SHOW work_mem;";
       List<String> workMems = jdbcTemplate.query(workMemSql, (rs, rowNum) -> rs.getString("work_mem"));
+      if (workMems.size() != 1) {
+        throw new ApplicationException("", "", new Exception());
+      }
       Double workMem = Double.parseDouble(workMems.get(0).replaceAll("MB", ""));
       //max_connectionsの設定値を取得
       String maxConnectionsSql = "SHOW max_connections;";
       List<Integer> maxConnections = jdbcTemplate.query(maxConnectionsSql, (rs, rowNum) -> rs.getInt("max_connections"));
+      if(maxConnections.size() != 1) {
+        throw new ApplicationException("", "", new Exception());
+      }
 
       MemUsageData[] memUsageData = reader.read(startTime, endTime).stream()
           .map(record -> new MemUsageData(record.getTimestamp(), record.getMemUsage(), record.getMemUsageRatio(), record.getConnections()))
