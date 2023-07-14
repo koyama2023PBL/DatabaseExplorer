@@ -2,18 +2,20 @@ version: '3.8'
 services:
   db:
     container_name: de-psql
-    image: postgres:15
+    build: ./container/db
     restart: always
     environment:
       POSTGRES_DB: explorer
       POSTGRES_USER: explorer
       POSTGRES_PASSWORD: explorer
       POSTGRES_SHARED_PRELOAD_LIBRARIES: 'pg_stat_statements'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
   ssh:
     container_name: de-ssh
-    build: .
+    build: ./container/ssh
     restart: always
     ports:
       - 2222:2222
