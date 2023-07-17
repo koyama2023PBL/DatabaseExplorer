@@ -16,7 +16,7 @@ import java.util.Date;
 public class MemUsageData {
 
   @NonNull
-  @JsonProperty("date")
+  @JsonProperty("timestamp")
   @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "Asia/Tokyo")
   private Date timestamp;
 
