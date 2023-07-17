@@ -9,11 +9,11 @@ import lombok.NonNull;
 import java.util.Date;
 
 /**
- * プロセスメモリのデータを保持するモデルクラス
+ * デッドタプル数と割合のデータを保持するモデルクラス
  */
 @Data
 @AllArgsConstructor
-public class MemUsageData {
+public class DeadTupData {
 
   @NonNull
   @JsonProperty("timestamp")
@@ -21,14 +21,10 @@ public class MemUsageData {
   private Date timestamp;
 
   @NonNull
-  @JsonProperty("memUsage")
-  private Integer memUsage;
+  @JsonProperty("deadTupCount")
+  private Integer deadTupCount;
 
   @NonNull
-  @JsonProperty("memUsageRatio")
-  private Double memUsageRatio;
-
-  @NonNull
-  @JsonProperty("connections")
-  private Integer connections;
+  @JsonProperty("deadTupRatio")
+  private Double deadTupRatio;
 }
