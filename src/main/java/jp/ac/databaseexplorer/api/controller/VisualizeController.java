@@ -62,6 +62,11 @@ public class VisualizeController {
    */
   private final MemUsageService memUsageService;
 
+  /**
+   * デッドタプル数と割合を取得するサービス
+   */
+  private final DeadTupService deadTupService;
+
 
   /**
    * CPU使用率を取得するAPI
@@ -312,6 +317,47 @@ public class VisualizeController {
     }
     catch(Exception e) {
       errorLogger.error("memUsage:Exception", e);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /** デッドタプル数と割合を取得するAPI
+   * @param startTime 取得期間の開始時間
+   * @param endTime 取得期間の終了時間
+   * @return DeadTupApiResponse
+   */
+
+  @GetMapping
+  @RequestMapping(value = "/dead-tup", method = RequestMethod.GET)
+  public ResponseEntity<?> deadTup(
+      @RequestParam("starttime")String startTime,
+      @RequestParam("endtime")String endTime) {
+    try {
+      long methodBeginTime = System.currentTimeMillis();
+      systemLogger.info("deadTup start。 startTime:" + startTime + " endTime:" + endTime);
+
+      SimpleDateFormat dtFt = new SimpleDateFormat(STRING_TO_DATE);
+      Date startTimeDate = dtFt.parse(startTime);
+      Date endTimeDate = dtFt.parse(endTime);
+      DeadTupApiRequest request = new DeadTupApiRequest(startTimeDate, endTimeDate);
+      DeadTupApiResponse response = deadTupService.getDeadTup(request);
+
+      systemLogger.info("deadTup end。 Response:" + response);
+      long methodEndTime = System.currentTimeMillis();
+      operationLogger.info("deadTup operationTime:" + (methodEndTime - methodBeginTime) + " ms");
+
+      return ResponseEntity.ok(response);
+    }
+    catch (ParseException pe) {
+      errorLogger.error("deadTup:ParseException", pe);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    catch (ApplicationException ae) {
+      errorLogger.error("deadTup:ApplicationException", ae);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    catch(Exception e) {
+      errorLogger.error("deadTup:Exception", e);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
