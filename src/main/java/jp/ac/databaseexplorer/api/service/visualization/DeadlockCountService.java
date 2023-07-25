@@ -36,7 +36,8 @@ public class DeadlockCountService {
 
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
-      List<Deadlock> deadlocks = reader.read(startTime, endTime).stream().filter(x -> x.getDbName().equals(request.getDatabaseName())).toList();
+//      List<Deadlock> deadlocks = reader.read(startTime, endTime).stream().filter(x -> x.getDbName().equals(request.getDatabaseName())).toList();
+      List<Deadlock> deadlocks = reader.read(startTime, endTime).stream().filter(x -> x.getDbName().equals("explorer")).toList();
 
       Long deadlockCount;
 

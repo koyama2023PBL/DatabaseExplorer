@@ -34,7 +34,7 @@ public class CacheHitRateService {
 
       Date startTime = request.getStartTime();
       Date endTime = request.getEndTime();
-      List<CacheHit> cacheHits = reader.read(startTime, endTime).stream().filter(x -> x.getDbName().equals(request.getDatabaseName())).toList();
+      List<CacheHit> cacheHits = reader.read(startTime, endTime).stream().filter(x -> x.getDbName().equals("explorer")).toList();
 
       Double numHit = 0D;
       Double numRead = 0D;
