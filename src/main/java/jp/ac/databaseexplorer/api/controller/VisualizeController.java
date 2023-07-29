@@ -72,6 +72,10 @@ public class VisualizeController {
    */
   private final DeadlockCountService deadlockCountService;
 
+  /**
+   * エラーログを取得するサービス
+   */
+  private final ErrorLogService errorLogService;
 
   /**
    * CPU使用率を取得するAPI
@@ -397,5 +401,43 @@ public class VisualizeController {
     }
   }
 
+  /**
+   * エラーログを取得するAPI
+   *
+   * @param startTime 取得期間の開始時間
+   * @param endTime   取得期間の終了時間
+   * @return ErrorLogResponse
+   */
 
+  @GetMapping
+  @RequestMapping(value = "/error-log", method = RequestMethod.GET)
+  public ResponseEntity<?> errorLog(
+      @RequestParam("starttime") String startTime,
+      @RequestParam("endtime") String endTime) {
+    try {
+      long methodBeginTime = System.currentTimeMillis();
+      systemLogger.info("errorLog start。 startTime:" + startTime + " endTime:" + endTime);
+
+      SimpleDateFormat dtFt = new SimpleDateFormat(STRING_TO_DATE);
+      Date startTimeDate = dtFt.parse(startTime);
+      Date endTimeDate = dtFt.parse(endTime);
+      ErrorLogRequest request = new ErrorLogRequest(startTimeDate, endTimeDate);
+      ErrorLogResponse response = errorLogService.getErrorLog(request);
+
+      systemLogger.info("errorLog end。 Response:" + response);
+      long methodEndTime = System.currentTimeMillis();
+      operationLogger.info("errorLog operationTime:" + (methodEndTime - methodBeginTime) + " ms");
+
+      return ResponseEntity.ok(response);
+    } catch (ParseException pe) {
+      errorLogger.error("errorLog:ParseException", pe);
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } catch (ApplicationException ae) {
+      errorLogger.error("errorLog:ApplicationException", ae);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (Exception e) {
+      errorLogger.error("errorLog:Exception", e);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
