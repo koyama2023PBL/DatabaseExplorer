@@ -51,8 +51,11 @@ public class DeadTupJob extends VisualizeJobBase {
 
       //それぞれ配列の大きさは１になる
       Map<String, Object> result = jdbcTemplate.queryForMap(sql);
-      Integer deadTupCount = Integer.valueOf(result.get("dead_tup_count").toString());
-      Double deadTupRatio = Double.valueOf(result.get("dead_tup_ratio").toString());
+      Object deadTupCountOrg = result.get("dead_tup_count");
+      Object deadTupRatioOrg = result.get("dead_tup_ratio");
+
+      Integer deadTupCount = Integer.valueOf(deadTupCountOrg == null ? "0" : deadTupCountOrg.toString());
+      Double  deadTupRatio =  Double.valueOf(deadTupRatioOrg == null ? "0" : deadTupRatioOrg.toString());
       Date now = new Date();
 
       //デッドタプルの状況を書き込む
