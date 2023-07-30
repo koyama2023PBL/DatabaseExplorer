@@ -49,7 +49,7 @@ public class ErrorLogService {
           try {
             Date dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(time.trim());
             if((dt.after(startTime) && dt.before(endTime)) || dt.equals(startTime) || dt.equals(endTime)){
-              errorLogList.add(new ErrorLog(dt, line.replaceFirst(time, "").trim()));
+              errorLogList.add(new ErrorLog(dt, line.trim()));
             }
           }
           catch (ParseException pe){
